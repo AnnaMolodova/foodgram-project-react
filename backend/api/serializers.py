@@ -2,13 +2,12 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
+from recipes.models import AmountIngredient, Favorite, Ingredient, Recipe, Tag
 from rest_framework.serializers import (CharField, CurrentUserDefault,
                                         HiddenField, IntegerField,
                                         ModelSerializer,
                                         PrimaryKeyRelatedField, Serializer,
                                         SerializerMethodField)
-
-from recipes.models import AmountIngredient, Favorite, Ingredient, Recipe, Tag
 from users.models import Subscribe
 
 User = get_user_model()
