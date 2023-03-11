@@ -29,7 +29,7 @@ class BaseUserCreateSerializer(UserCreateSerializer):
 
 class BaseUserSerializer(UserSerializer):
     is_subscribed = SerializerMethodField()
-    
+
     class Meta:
         model = User
         fields = (
@@ -40,6 +40,7 @@ class BaseUserSerializer(UserSerializer):
             'last_name',
             'is_subscribed',
         )
+
     def get_is_subscribed(self, obj):
         user = self.context['request'].user
         if user.is_anonymous:
