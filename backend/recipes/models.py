@@ -25,7 +25,6 @@ class Tag(models.Model):
         verbose_name='Слаг tag',
         max_length=200,
         unique=True,
-        db_index=False,
     )
 
     class Meta:

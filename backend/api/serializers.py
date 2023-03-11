@@ -2,12 +2,13 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
-from recipes.models import AmountIngredient, Favorite, Ingredient, Recipe, Tag
 from rest_framework.serializers import (CharField, CurrentUserDefault,
                                         HiddenField, IntegerField,
                                         ModelSerializer,
                                         PrimaryKeyRelatedField, Serializer,
                                         SerializerMethodField)
+
+from recipes.models import AmountIngredient, Favorite, Ingredient, Recipe, Tag
 from users.models import Subscribe
 
 User = get_user_model()
@@ -28,13 +29,7 @@ class BaseUserCreateSerializer(UserCreateSerializer):
 
 class BaseUserSerializer(UserSerializer):
     is_subscribed = SerializerMethodField()
-
-    def get_is_subscribed(self, obj):
-        user = self.context['request'].user
-        if user.is_anonymous:
-            return False
-        return Subscribe.objects.filter(user=user, author=obj).exists()
-
+    
     class Meta:
         model = User
         fields = (
@@ -45,6 +40,11 @@ class BaseUserSerializer(UserSerializer):
             'last_name',
             'is_subscribed',
         )
+    def get_is_subscribed(self, obj):
+        user = self.context['request'].user
+        if user.is_anonymous:
+            return False
+        return Subscribe.objects.filter(user=user, author=obj).exists()
 
 
 class PasswordSerializer(Serializer):
