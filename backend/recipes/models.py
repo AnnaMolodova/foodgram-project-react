@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import (CASCADE, CharField, DateTimeField, ForeignKey,
                               ImageField, ManyToManyField,
@@ -78,7 +78,10 @@ class Recipe(models.Model):
     )
     cooking_time = PositiveSmallIntegerField(
         validators=[MinValueValidator(
-            1, message='Слишком маленькое время приготовления')],
+            1, message='Слишком маленькое время приготовления'),
+            MaxValueValidator(
+            1000, message='Слишком долго'
+        ), ],
         verbose_name='Время приготовления в минутах',
     )
     author = ForeignKey(
@@ -116,6 +119,11 @@ class AmountIngredient(models.Model):
         related_name='amount_ingredient'
     )
     amount = PositiveSmallIntegerField(
+        validators=[MinValueValidator(
+            1, message='Нужно хоть немного'),
+            MaxValueValidator(
+            50, message='Слишком долго'
+        ), ],
         verbose_name='Количество',
     )
 
